@@ -92,18 +92,17 @@ func TaskTwo() {
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		// find starting index of substring in line (if exists)
+		// find first & last index of substring in line (if exists)
 		// find index of digit in line (if exists)
-		// append to digits array in order of index
+		// create map with index and int value
+		// append maps to digits array in order of index
+		// sum values of lowest and highest index maps
 
 		for k, v := range intReference {
 			firstInd := strings.Index(line, k)
 			lastInd := strings.LastIndex(line, k)
 			if firstInd > -1 {
 				digits = append(digits, map[int]int{firstInd: v}, map[int]int{lastInd: v})
-			}
-			if lastInd > -1 {
-				digits = append(digits, map[int]int{lastInd: v})
 			}
 		}
 
@@ -112,13 +111,6 @@ func TaskTwo() {
 			if num, err := strconv.Atoi(strVal); err == nil {
 				digits = append(digits, map[int]int{index: num})
 			}
-		}
-
-		concatStr := strconv.Itoa(digits[0][1]) + strconv.Itoa(digits[len(digits)-1][1])
-		_, err := strconv.Atoi(concatStr)
-		if err != nil {
-			fmt.Println("unable to convert to int")
-			return
 		}
 
 		sort.Slice(digits, func(i, j int) bool {
