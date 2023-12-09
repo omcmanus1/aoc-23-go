@@ -1,8 +1,8 @@
 package main
 
+import "github.com/omcmanus1/aoc-23/one"
+
 func main() {
-	TaskTwo()
-	// digits := []map[int]int{}
-	// digits = append(digits, map[int]int{0: 4})
-	// fmt.Println(GetValue(digits[0]) + GetValue(digits[len(digits)-1]))
+	one.TaskOne()
+	one.TaskTwo()
 }

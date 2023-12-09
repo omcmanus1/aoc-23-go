@@ -1,13 +1,14 @@
-package main
+package one
 
 import (
 	"bufio"
 	"fmt"
 	"log"
-	"os"
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/omcmanus1/aoc-23/utils"
 )
 
 /*
@@ -17,7 +18,7 @@ import (
 */
 
 func TaskOne() {
-	file, err := getFile()
+	file, err := utils.GetFile("one/01-input.txt")
 
 	defer func() {
 		if err = file.Close(); err != nil {
@@ -45,8 +46,8 @@ func TaskOne() {
 			fmt.Println("unable to convert to int")
 			return
 		}
-		fmt.Println("Line ", count, ":", line, "digits: ", digits, " = ", concatStr, "running total: ", sum)
 		sum += concatNum
+		// fmt.Println("Line ", count, ":", line, "digits: ", digits, " = ", concatStr, "running total: ", sum)
 		digits = []int{}
 		count++
 	}
@@ -55,12 +56,12 @@ func TaskOne() {
 }
 
 /*
-- Same as above, but include numbers spelled alphabetically (.e.g "nine")
+- Same as above, but include numbers spelled alphabetically (e.g. "nine")
 - Add first and last in each line, return sum of all numbers
 */
 
 func TaskTwo() {
-	file, err := getFile()
+	file, err := utils.GetFile("one/01-input.txt")
 
 	defer func() {
 		if err = file.Close(); err != nil {
@@ -99,7 +100,7 @@ func TaskTwo() {
 			firstInd := strings.Index(line, k)
 			lastInd := strings.LastIndex(line, k)
 			if firstInd > -1 {
-				digits = append(digits, map[int]int{firstInd: v})
+				digits = append(digits, map[int]int{firstInd: v}, map[int]int{lastInd: v})
 			}
 			if lastInd > -1 {
 				digits = append(digits, map[int]int{lastInd: v})
@@ -121,10 +122,10 @@ func TaskTwo() {
 		}
 
 		sort.Slice(digits, func(i, j int) bool {
-			key1, key2 := GetKey(digits[i]), GetKey(digits[j])
+			key1, key2 := utils.GetKey(digits[i]), utils.GetKey(digits[j])
 			return key1 < key2
 		})
-		accStr := strconv.Itoa(GetValue(digits[0])) + strconv.Itoa(GetValue(digits[len(digits)-1]))
+		accStr := strconv.Itoa(utils.GetValue(digits[0])) + strconv.Itoa(utils.GetValue(digits[len(digits)-1]))
 		accNum, err := strconv.Atoi(accStr)
 		if err != nil {
 			fmt.Println("unable to convert to int")
@@ -132,34 +133,11 @@ func TaskTwo() {
 		}
 
 		sum += accNum
-		count++
-		fmt.Println("Line", count, ":", line, digits, accNum)
+		// fmt.Println("Line", count, ":", line, digits, accNum)
 		digits = []map[int]int{}
+		count++
 	}
 
 	fmt.Println("Final Total:", sum)
 
-}
-
-func getFile() (*os.File, error) {
-	file, err := os.Open("01-input.txt")
-	if err != nil {
-		fmt.Println("error reading file")
-		return nil, err
-	}
-	return file, err
-}
-
-func GetKey(m map[int]int) int {
-	for k := range m {
-		return k
-	}
-	return 0
-}
-
-func GetValue(m map[int]int) int {
-	for _, v := range m {
-		return v
-	}
-	return 0
 }
