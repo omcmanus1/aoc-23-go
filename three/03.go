@@ -10,11 +10,9 @@ import (
 	"github.com/omcmanus1/aoc-23/utils"
 )
 
-/*
-* search through each line in file
-* if number is adjacent to a symbol (not period),
-* including horizontal/up/down/diagonal, add to total
- */
+// * search through each line in file
+// * if number is adjacent to a symbol (not period),
+// * including horizontal/up/down/diagonal, add to total
 
 func TaskOne() {
 	file, err := utils.GetFile("three/input.txt")
@@ -29,12 +27,12 @@ func TaskOne() {
 	symbolRegex := regexp.MustCompile(`[^a-zA-Z0-9\s.]`)
 
 	// indexes of symbol occurrences
-	// one sub-slice per line with all symbol occurrences (can be 1 or 0)
+	// one sub-slice per line with all symbol occurrences (multiple or none included)
 	symbolIndexes := [][]int{}
 
-	// indexes of number occurrences
-	// slice of slices of maps (one sub-slice per line, one map per number)
-	// num value as key, slice of [start index, end index] as values
+	// slice of number occurrences
+	// containing slices of maps (one sub-slice per line, one map per number)
+	// map contains value (single item slice). plus indices [start, end] 
 	numIndexes := [][]map[string][]int{}
 
 	scanner := bufio.NewScanner(file)
@@ -64,10 +62,11 @@ func TaskOne() {
 		}
 		numIndexes = append(numIndexes, tempNums)
 	}
+	fmt.Println(numIndexes)
 
 	// loop through array of nums
 	// check previous, current and following line for symbols
-	// if symbol is covered by index range (plus start - 1), add to total
+	// if symbol is covered by index range (plus neighbours), add to total
 
 	partsTotal := 0
 	for lineIndex := range numIndexes {
