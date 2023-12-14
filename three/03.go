@@ -65,7 +65,7 @@ func TaskTwo() {
 
 	symbolIndexes, numIndexes := populateRefs(`\*`, file)
 
-	partsTotal := 0
+	ratiosTotal := 0
 	for gearInd, gearVals := range symbolIndexes {
 		if len(symbolIndexes[gearInd]) == 0 {
 			continue
@@ -73,17 +73,14 @@ func TaskTwo() {
 		for _, gearVal := range gearVals {
 			// gearVal := symbolIndexes[gearInd][0]
 			adjacentCount := []int{}
-			fmt.Println("line:", gearInd, "gear index:", gearVal)
 			for _, num := range numIndexes[gearInd] {
 				if gearVal >= num["range"][0] && gearVal <= num["range"][1] {
-					fmt.Println("match:", num)
 					adjacentCount = append(adjacentCount, num["value"][0])
 				}
 			}
 			if gearInd > 0 {
 				for _, num := range numIndexes[gearInd-1] {
 					if gearVal >= num["range"][0] && gearVal <= num["range"][1] {
-						fmt.Println("match:", num)
 						adjacentCount = append(adjacentCount, num["value"][0])
 					}
 				}
@@ -91,18 +88,17 @@ func TaskTwo() {
 			if gearInd < len(numIndexes)-1 {
 				for _, num := range numIndexes[gearInd+1] {
 					if gearVal >= num["range"][0] && gearVal <= num["range"][1] {
-						fmt.Println("match:", num)
 						adjacentCount = append(adjacentCount, num["value"][0])
 					}
 				}
 			}
 			if len(adjacentCount) == 2 {
-				partsTotal += (adjacentCount[0] * adjacentCount[1])
+				ratiosTotal += (adjacentCount[0] * adjacentCount[1])
 			}
 		}
 	}
 
-	fmt.Println("parts total:", partsTotal)
+	fmt.Println("gear ratios total:", ratiosTotal)
 }
 
 func populateRefs(symbolPattern string, file *os.File) ([][]int, [][]map[string][]int) {
