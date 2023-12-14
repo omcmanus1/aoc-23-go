@@ -28,11 +28,3 @@ func GetValue(m map[int]int) int {
 	return 0
 }
 
-func SliceContains(s []interface{}, inp interface{}) bool {
-	for _, item := range s {
-		if item == inp {
-			return true
-		}
-	}
-	return false
-}
