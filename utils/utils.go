@@ -1,17 +1,18 @@
 package utils
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 )
 
-func GetFile(path string) (*os.File, error) {
+func GetFile(path string) (*bufio.Scanner, *os.File) {
 	file, err := os.Open(path)
 	if err != nil {
-		fmt.Println("error reading file")
-		return nil, err
+		fmt.Println("file open error:", err)
 	}
-	return file, err
+	scanner := bufio.NewScanner(file)
+	return scanner, file
 }
 
 func GetKey(m map[int]int) int {
@@ -27,4 +28,3 @@ func GetValue(m map[int]int) int {
 	}
 	return 0
 }
-

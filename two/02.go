@@ -1,9 +1,7 @@
 package two
 
 import (
-	"bufio"
 	"fmt"
-	"log"
 	"regexp"
 	"strconv"
 	"strings"
@@ -18,13 +16,8 @@ import (
 // loop through each line and sum total of each color for all games
 
 func TaskOne() {
-	file, err := utils.GetFile("two/02-input.txt")
-	defer func() {
-		if err = file.Close(); err != nil {
-			log.Fatal(err)
-			return
-		}
-	}()
+	scanner, file := utils.GetFile("two/input.txt")
+	defer file.Close()
 
 	colorLimits := map[string]int{
 		"red":   12,
@@ -37,10 +30,8 @@ func TaskOne() {
 		"blue":  0,
 	}
 
-	pattern := `(\d+)\s+(red|green|blue)`
-	regex := regexp.MustCompile(pattern)
+	regex := regexp.MustCompile(`(\d+)\s+(red|green|blue)`)
 
-	scanner := bufio.NewScanner(file)
 	game := 1
 	total := 0
 
@@ -63,7 +54,6 @@ func TaskOne() {
 			}
 		}
 		if !slices.Contains(toAdd, false) {
-			fmt.Println("possible game", "total:", total, "to add:", game)
 			total += game
 		}
 		game++
@@ -78,18 +68,11 @@ func TaskOne() {
  */
 
 func TaskTwo() {
-	file, err := utils.GetFile("two/02-input.txt")
-	defer func() {
-		if err = file.Close(); err != nil {
-			log.Fatal(err)
-			return
-		}
-	}()
+	scanner, file := utils.GetFile("two/input.txt")
+	defer file.Close()
 
-	pattern := `(\d+)\s+(red|green|blue)`
-	regex := regexp.MustCompile(pattern)
+	regex := regexp.MustCompile(`(\d+)\s+(red|green|blue)`)
 
-	scanner := bufio.NewScanner(file)
 	game := 1
 	total := 0
 
@@ -113,7 +96,6 @@ func TaskTwo() {
 			}
 		}
 		setPower := colorMinimums["red"] * colorMinimums["green"] * colorMinimums["blue"]
-		// fmt.Println("game", game, "minimums:", colorMinimums, "power:", setPower)
 		total += setPower
 		game++
 	}

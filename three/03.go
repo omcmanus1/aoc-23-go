@@ -3,9 +3,10 @@ package three
 import (
 	"bufio"
 	"fmt"
-	"os"
 	"regexp"
 	"strconv"
+
+	"github.com/omcmanus1/aoc-23/utils"
 )
 
 // * search through each line in file
@@ -13,13 +14,10 @@ import (
 // * including horizontal/up/down/diagonal, add to total
 
 func TaskOne() {
-	file, err := os.Open("three/input.txt")
-	if err != nil {
-		fmt.Println("file open error:", err)
-	}
+	scanner, file := utils.GetFile("three/input.txt")
 	defer file.Close()
 
-	symbolIndexes, numIndexes := populateRefs(`[^a-zA-Z0-9\s.]`, file)
+	symbolIndexes, numIndexes := populateRefs(`[^a-zA-Z0-9\s.]`, scanner)
 
 	// loop through array of nums
 	// check previous, current and following line for symbols
@@ -53,25 +51,21 @@ func TaskOne() {
 }
 
 // only search for '*' in lines
-// if '*' is adjacenent to exactly 2 numbers (on surrounding lines)
+// if '*' is adjacenent to exactly 2 numbers (on same or surrounding lines):
 // multiply the two numbers and add to total
 
 func TaskTwo() {
-	file, err := os.Open("three/input.txt")
-	if err != nil {
-		fmt.Println("file open error:", err)
-	}
+	scanner, file := utils.GetFile(`three/input.txt`)
 	defer file.Close()
 
-	symbolIndexes, numIndexes := populateRefs(`\*`, file)
+	gearIndexes, numIndexes := populateRefs(`\*`, scanner)
 
 	ratiosTotal := 0
-	for gearInd, gearVals := range symbolIndexes {
-		if len(symbolIndexes[gearInd]) == 0 {
+	for gearInd, gearVals := range gearIndexes {
+		if len(gearIndexes[gearInd]) == 0 {
 			continue
 		}
 		for _, gearVal := range gearVals {
-			// gearVal := symbolIndexes[gearInd][0]
 			adjacentCount := []int{}
 			for _, num := range numIndexes[gearInd] {
 				if gearVal >= num["range"][0] && gearVal <= num["range"][1] {
@@ -101,7 +95,7 @@ func TaskTwo() {
 	fmt.Println("gear ratios total:", ratiosTotal)
 }
 
-func populateRefs(symbolPattern string, file *os.File) ([][]int, [][]map[string][]int) {
+func populateRefs(symbolPattern string, scanner *bufio.Scanner) ([][]int, [][]map[string][]int) {
 	numRegex := regexp.MustCompile(`(\d+)`)
 	symbolRegex := regexp.MustCompile(`[^a-zA-Z0-9\s.]`)
 
@@ -114,7 +108,6 @@ func populateRefs(symbolPattern string, file *os.File) ([][]int, [][]map[string]
 	// map contains value (single item slice). plus indices [start, end]
 	numIndexes := [][]map[string][]int{}
 
-	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
 

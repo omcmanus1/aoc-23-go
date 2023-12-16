@@ -1,9 +1,7 @@
 package one
 
 import (
-	"bufio"
 	"fmt"
-	"log"
 	"sort"
 	"strconv"
 	"strings"
@@ -18,16 +16,9 @@ import (
 */
 
 func TaskOne() {
-	file, err := utils.GetFile("one/01-input.txt")
+	scanner, file := utils.GetFile("one/input.txt")
+	defer file.Close()
 
-	defer func() {
-		if err = file.Close(); err != nil {
-			log.Fatal(err)
-			return
-		}
-	}()
-
-	scanner := bufio.NewScanner(file)
 	sum := 0
 	count := 0
 	digits := []int{}
@@ -61,16 +52,9 @@ func TaskOne() {
 */
 
 func TaskTwo() {
-	file, err := utils.GetFile("one/01-input.txt")
+	scanner, file := utils.GetFile("one/input.txt")
+	defer file.Close()
 
-	defer func() {
-		if err = file.Close(); err != nil {
-			log.Fatal(err)
-			return
-		}
-	}()
-
-	scanner := bufio.NewScanner(file)
 	sum := 0
 	count := 0
 	digits := []map[int]int{}
