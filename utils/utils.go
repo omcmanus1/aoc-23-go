@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func GetFileLines(path string) (*bufio.Scanner, *os.File) {
+func GetFileScanner(path string) (*bufio.Scanner, *os.File) {
 	file, err := os.Open(path)
 	if err != nil {
 		fmt.Println("file open error:", err)

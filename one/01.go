@@ -16,7 +16,7 @@ import (
 */
 
 func TaskOne() {
-	scanner, file := utils.GetFileLines("one/input.txt")
+	scanner, file := utils.GetFileScanner("one/input.txt")
 	defer file.Close()
 
 	sum := 0
@@ -52,7 +52,7 @@ func TaskOne() {
 */
 
 func TaskTwo() {
-	scanner, file := utils.GetFileLines("one/input.txt")
+	scanner, file := utils.GetFileScanner("one/input.txt")
 	defer file.Close()
 
 	sum := 0

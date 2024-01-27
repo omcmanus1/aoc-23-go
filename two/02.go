@@ -16,7 +16,7 @@ import (
 // loop through each line and sum total of each color for all games
 
 func TaskOne() {
-	scanner, file := utils.GetFileLines("two/input.txt")
+	scanner, file := utils.GetFileScanner("two/input.txt")
 	defer file.Close()
 
 	colorLimits := map[string]int{
@@ -68,7 +68,7 @@ func TaskOne() {
  */
 
 func TaskTwo() {
-	scanner, file := utils.GetFileLines("two/input.txt")
+	scanner, file := utils.GetFileScanner("two/input.txt")
 	defer file.Close()
 
 	regex := regexp.MustCompile(`(\d+)\s+(red|green|blue)`)
