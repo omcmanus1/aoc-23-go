@@ -15,7 +15,7 @@ import (
 // * e.g. 16 points is the max score
 
 func TaskOne() {
-	scanner, file := utils.GetFile("four/input.txt")
+	scanner, file := utils.GetFileLines("four/input.txt")
 	defer file.Close()
 
 	totalScore := 0
@@ -42,7 +42,7 @@ func TaskOne() {
 // evaluate each card * num of copies you have
 
 func TaskTwo() {
-	scanner, file := utils.GetFile("four/test.txt")
+	scanner, file := utils.GetFileLines("four/test.txt")
 	defer file.Close()
 
 	type Score struct {

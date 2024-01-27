@@ -14,7 +14,7 @@ import (
 // * including horizontal/up/down/diagonal, add to total
 
 func TaskOne() {
-	scanner, file := utils.GetFile("three/input.txt")
+	scanner, file := utils.GetFileLines("three/input.txt")
 	defer file.Close()
 
 	symbolIndexes, numIndexes := populateRefs(`[^a-zA-Z0-9\s.]`, scanner)
@@ -55,7 +55,7 @@ func TaskOne() {
 // multiply the two numbers and add to total
 
 func TaskTwo() {
-	scanner, file := utils.GetFile(`three/input.txt`)
+	scanner, file := utils.GetFileLines(`three/input.txt`)
 	defer file.Close()
 
 	gearIndexes, numIndexes := populateRefs(`\*`, scanner)
