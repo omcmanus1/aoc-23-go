@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 func GetFileScanner(path string) (*bufio.Scanner, *os.File) {
@@ -27,4 +28,16 @@ func GetValue(m map[int]int) int {
 		return v
 	}
 	return 0
+}
+
+func Check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
+
+func StringToInt(input string) int {
+	output, err := strconv.Atoi(input)
+	Check(err)
+	return output
 }
