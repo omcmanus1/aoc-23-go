@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"regexp"
 
+	"golang.org/x/exp/slices"
+
 	"github.com/omcmanus1/aoc-23/utils"
 )
 
@@ -24,30 +26,39 @@ import (
 type MapObj map[string]int
 
 func TaskOne() {
-	scanner, file := utils.GetFileScanner("five/test.txt")
+	scanner, file := utils.GetFileScanner("five/input.txt")
 	defer file.Close()
 
 	seeds, conversionRefs := populateRefs(scanner)
-	fmt.Printf("%+v\n", seeds)
-	fmt.Printf("%+v\n", conversionRefs)
-	fmt.Printf("%+v\n", len(conversionRefs))
+	outputArr := []int{}
 
-	// for _, s := range seeds {
-	// 	singlePass(s, conversionRefs)
-	// }
+	for _, s := range seeds {
+		outputArr = append(outputArr, singlePass(s, conversionRefs))
+	}
 
+	lowestOutput := slices.Min(outputArr)
+	fmt.Println(lowestOutput)
 }
 
-// func singlePass(seed int, conversionRefs [][]MapObj) int {
-// 	fmt.Println(len(conversionRefs))
-// 	// for i, group := range conversionRefs {
-// 	// 	fmt.Println(i, group)
-// 	// }
-// 	return 0
-// }
+func singlePass(seed int, conversionRefs [][]MapObj) int {
+	for i := range conversionRefs {
+		for _, singleMap := range conversionRefs[i] {
+			if seed <= singleMap["end"] && seed >= singleMap["start"] {
+				seed += singleMap["conversion"]
+				i++
+				break
+			}
+			if i == len(conversionRefs)-1 {
+				i++
+			}
+		}
+	}
+	return seed
+}
 
 func populateRefs(scanner *bufio.Scanner) ([]int, [][]MapObj) {
 	var seeds []int
+	seedsComplete := false
 	var tempArr []MapObj
 	refsByGroup := [][]MapObj{}
 
@@ -57,10 +68,13 @@ func populateRefs(scanner *bufio.Scanner) ([]int, [][]MapObj) {
 		line := scanner.Text()
 		matches := numRegex.FindAllString(line, -1)
 
-		if len(seeds) == 0 {
+		if !seedsComplete {
 			for item := range matches {
 				seed := utils.StringToInt(matches[item])
 				seeds = append(seeds, seed)
+			}
+			if line == "" {
+				seedsComplete = true
 			}
 			continue
 		}
