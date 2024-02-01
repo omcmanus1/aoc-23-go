@@ -30,14 +30,58 @@ func TaskOne() {
 	defer file.Close()
 
 	seeds, conversionRefs := populateRefs(scanner)
-	outputArr := []int{}
 
+	outputArr := []int{}
 	for _, s := range seeds {
 		outputArr = append(outputArr, singlePass(s, conversionRefs))
 	}
 
 	lowestOutput := slices.Min(outputArr)
 	fmt.Println(lowestOutput)
+}
+
+func TaskTwo() {
+	scanner, file := utils.GetFileScanner("five/input.txt")
+	defer file.Close()
+
+	seedRanges, conversionRefs := populateRefs(scanner)
+	seeds := getAllSeeds(seedRanges)
+
+	outputArr := []int{}
+	for _, s := range seeds {
+		outputArr = append(outputArr, singlePass(s, conversionRefs))
+	}
+
+	lowestOutput := slices.Min(outputArr)
+	fmt.Println(lowestOutput)
+}
+
+func getAllSeeds(seedRanges []int) []int {
+	var rangeStart int
+	var rangeEnd int
+	var tempList []int
+	var outputList []int
+	for i := range seedRanges {
+		fmt.Println("num:", seedRanges[i])
+		if i%2 == 0 {
+			rangeStart = seedRanges[i]
+			fmt.Println("range start:", rangeStart)
+			continue
+		}
+		if i%2 != 0 {
+			fmt.Println("range start:", rangeStart)
+			rangeEnd = rangeStart + seedRanges[i]
+			fmt.Println("range end:", rangeEnd)
+			for i := rangeStart; i < rangeEnd; i++ {
+				tempList = append(tempList, i)
+			}
+		}
+		outputList = append(outputList, tempList...)
+		rangeStart = 0
+		rangeEnd = 0
+		tempList = []int{}
+	}
+	return outputList
 }
 
 func singlePass(seed int, conversionRefs [][]MapObj) int {
