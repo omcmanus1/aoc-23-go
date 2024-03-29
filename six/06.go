@@ -110,5 +110,6 @@ func getRaceWins(race raceStats) int {
 			wins++
 		}
 	}
+
 	return wins
 }
