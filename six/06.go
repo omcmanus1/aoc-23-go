@@ -37,15 +37,7 @@ func TaskOne() {
 
 	marginError := 0
 	for _, race := range races {
-		fmt.Println("race:", race)
-		wins := 0
-		for i := range race.time {
-			multiplier := i + 1
-			if multiplier*(race.time-multiplier) > race.distance {
-				wins++
-			}
-		}
-		fmt.Println(wins)
+		wins := getRaceWins(race)
 		if marginError == 0 {
 			marginError = wins
 		} else {
@@ -73,14 +65,7 @@ func TaskTwo() {
 		index++
 	}
 
-	wins := 0
-	for i := range singleRace.time {
-		multiplier := i + 1
-		if multiplier*(singleRace.time-multiplier) > singleRace.distance {
-			wins++
-		}
-	}
-
+	wins := getRaceWins(singleRace)
 	fmt.Println(wins)
 }
 
@@ -115,4 +100,15 @@ func populateLine(line string) int {
 	outputInt := utils.StringToInt(trimmed)
 
 	return outputInt
+}
+
+func getRaceWins(race raceStats) int {
+	wins := 0
+	for i := range race.time {
+		multiplier := i + 1
+		if multiplier*(race.time-multiplier) > race.distance {
+			wins++
+		}
+	}
+	return wins
 }
