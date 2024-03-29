@@ -56,6 +56,34 @@ func TaskOne() {
 	fmt.Println(marginError)
 }
 
+func TaskTwo() {
+	scanner, file := utils.GetFileScanner("six/input.txt")
+	defer file.Close()
+
+	var singleRace raceStats
+	index := 0
+	for scanner.Scan() {
+		line := scanner.Text()
+		if index == 0 {
+			singleRace.time = populateLine(line)
+		}
+		if index == 1 {
+			singleRace.distance = populateLine(line)
+		}
+		index++
+	}
+
+	wins := 0
+	for i := range singleRace.time {
+		multiplier := i + 1
+		if multiplier*(singleRace.time-multiplier) > singleRace.distance {
+			wins++
+		}
+	}
+
+	fmt.Println(wins)
+}
+
 func getRaceTimes(line string) []raceStats {
 	var stats []raceStats
 
@@ -79,4 +107,12 @@ func getRaceDistances(line string, stats []raceStats) []raceStats {
 	}
 
 	return stats
+}
+
+func populateLine(line string) int {
+	_, after, _ := strings.Cut(line, ": ")
+	trimmed := strings.ReplaceAll(after, " ", "")
+	outputInt := utils.StringToInt(trimmed)
+
+	return outputInt
 }
