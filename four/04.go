@@ -2,9 +2,8 @@ package four
 
 import (
 	"fmt"
+	"slices"
 	"strings"
-
-	"golang.org/x/exp/slices"
 
 	"github.com/omcmanus1/aoc-23/utils"
 )

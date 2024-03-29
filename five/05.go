@@ -4,8 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"regexp"
-
-	"golang.org/x/exp/slices"
+	"slices"
 
 	"github.com/omcmanus1/aoc-23/utils"
 )

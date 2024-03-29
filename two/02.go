@@ -3,10 +3,9 @@ package two
 import (
 	"fmt"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
-
-	"golang.org/x/exp/slices"
 
 	"github.com/omcmanus1/aoc-23/utils"
 )
