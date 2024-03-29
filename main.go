@@ -1,7 +1,7 @@
 package main
 
-import "github.com/omcmanus1/aoc-23/five"
+import "github.com/omcmanus1/aoc-23/six"
 
 func main() {
-	five.TaskTwo()
+	six.TaskOne()
 }
