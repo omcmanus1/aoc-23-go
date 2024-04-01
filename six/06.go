@@ -27,10 +27,19 @@ func TaskOne() {
 	for scanner.Scan() {
 		line := scanner.Text()
 		if index == 0 {
-			races = getRaceTimes(line)
+			times := parseValues(line)
+			for _, time := range times {
+				timeInt := utils.StringToInt(time)
+				timeObj := raceStats{time: timeInt}
+				races = append(races, timeObj)
+			}
 		}
 		if index == 1 {
-			getRaceDistances(line, races)
+			distances := parseValues(line)
+			for i, distance := range distances {
+				distanceInt := utils.StringToInt(distance)
+				races[i].distance = distanceInt
+			}
 		}
 		index++
 	}
@@ -64,42 +73,14 @@ func TaskTwo() {
 		}
 		index++
 	}
-
 	wins := getRaceWins(singleRace)
+
 	fmt.Println(wins)
 }
 
-func getRaceTimes(line string) []raceStats {
-	var stats []raceStats
-
+func parseValues(line string) []string {
 	_, after, _ := strings.Cut(line, ": ")
-	times := strings.Fields(after)
-	for _, time := range times {
-		timeInt := utils.StringToInt(time)
-		timeObj := raceStats{time: timeInt}
-		stats = append(stats, timeObj)
-	}
-
-	return stats
-}
-
-func getRaceDistances(line string, stats []raceStats) []raceStats {
-	_, after, _ := strings.Cut(line, ": ")
-	distances := strings.Fields(after)
-	for i, distance := range distances {
-		distanceInt := utils.StringToInt(distance)
-		stats[i].distance = distanceInt
-	}
-
-	return stats
-}
-
-func populateLine(line string) int {
-	_, after, _ := strings.Cut(line, ": ")
-	trimmed := strings.ReplaceAll(after, " ", "")
-	outputInt := utils.StringToInt(trimmed)
-
-	return outputInt
+	return strings.Fields(after)
 }
 
 func getRaceWins(race raceStats) int {
@@ -110,6 +91,12 @@ func getRaceWins(race raceStats) int {
 			wins++
 		}
 	}
-
 	return wins
+}
+
+func populateLine(line string) int {
+	_, after, _ := strings.Cut(line, ": ")
+	trimmed := strings.ReplaceAll(after, " ", "")
+	outputInt := utils.StringToInt(trimmed)
+	return outputInt
 }
