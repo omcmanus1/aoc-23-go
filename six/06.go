@@ -13,7 +13,7 @@ import (
 // For each race, count each value of x where total distance > race record
 // Multiply counts for each race to return margin of error
 
-type raceStats struct {
+type RaceStats struct {
 	time     int
 	distance int
 }
@@ -22,7 +22,7 @@ func TaskOne() {
 	scanner, file := utils.GetFileScanner("six/input.txt")
 	defer file.Close()
 
-	races := []raceStats{}
+	races := []RaceStats{}
 	index := 0
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -30,7 +30,7 @@ func TaskOne() {
 			times := parseValues(line)
 			for _, time := range times {
 				timeInt := utils.StringToInt(time)
-				timeObj := raceStats{time: timeInt}
+				timeObj := RaceStats{time: timeInt}
 				races = append(races, timeObj)
 			}
 		}
@@ -61,7 +61,7 @@ func TaskTwo() {
 	scanner, file := utils.GetFileScanner("six/input.txt")
 	defer file.Close()
 
-	var singleRace raceStats
+	var singleRace RaceStats
 	index := 0
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -83,7 +83,7 @@ func parseValues(line string) []string {
 	return strings.Fields(after)
 }
 
-func getRaceWins(race raceStats) int {
+func getRaceWins(race RaceStats) int {
 	wins := 0
 	for i := range race.time {
 		multiplier := i + 1
