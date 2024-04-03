@@ -47,11 +47,11 @@ func TaskOne() {
 
 func calculateScore(hands []Hand) []Hand {
 	for i := 0; i < len(hands); i++ {
-		cardLabelsArr := strings.Split(cardLabels, "")
 		threeKind := false
 		onePair := false
-		for _, label := range cardLabelsArr {
-			repeatCount := strings.Count(hands[i].cards, label)
+		for _, label := range cardLabels {
+			labelStr := string(label)
+			repeatCount := strings.Count(hands[i].cards, labelStr)
 			switch repeatCount {
 			case 5:
 				hands[i].score = 6
