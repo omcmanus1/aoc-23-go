@@ -12,13 +12,15 @@ import (
 // Order list of hands (similar to poker) in strength
 // A = high, 2 = low
 // If hands match, rank by the highest first non-matching card
-// Multiply bid by rank (lowest rank = 1)
+// Multiply bid by rank (lowest rank = 1), add all together
 
 type Hand struct {
 	cards string
 	bid   int
 	score int
 }
+
+const cardLabels = "23456789TJQKA"
 
 func TaskOne() {
 	scanner, file := utils.GetFileScanner("seven/input.txt")
@@ -32,10 +34,8 @@ func TaskOne() {
 		bid := utils.StringToInt(lineSlice[1])
 		hands = append(hands, Hand{cards, bid, 0})
 	}
-
 	hands = calculateScore(hands)
 	hands = sortHands(hands)
-
 	winnings := 0
 	for i, hand := range hands {
 		fmt.Printf("cards: %v || score: %v * %v = %v\n", hand, hand.bid, i+1, hand.bid*(i+1))
@@ -47,10 +47,10 @@ func TaskOne() {
 
 func calculateScore(hands []Hand) []Hand {
 	for i := 0; i < len(hands); i++ {
-		cardLabels := []string{"2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"}
+		cardLabelsArr := strings.Split(cardLabels, "")
 		threeKind := false
 		onePair := false
-		for _, label := range cardLabels {
+		for _, label := range cardLabelsArr {
 			repeatCount := strings.Count(hands[i].cards, label)
 			switch repeatCount {
 			case 5:
@@ -58,8 +58,12 @@ func calculateScore(hands []Hand) []Hand {
 			case 4:
 				hands[i].score = 5
 			case 3:
+				if onePair {
+					hands[i].score = 4
+				} else {
+					hands[i].score = 3
+				}
 				threeKind = true
-				hands[i].score = 3
 			case 2:
 				if threeKind {
 					hands[i].score = 4
@@ -87,7 +91,6 @@ func sortHands(hands []Hand) []Hand {
 }
 
 func compareCards(cards1, cards2 string) bool {
-	cardLabels := "23456789TJQKA"
 	for i := 0; i < len(cards1); i++ {
 		index1 := strings.Index(cardLabels, string(cards1[i]))
 		index2 := strings.Index(cardLabels, string(cards2[i]))
